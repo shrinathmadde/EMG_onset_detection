@@ -22,9 +22,9 @@ All necessary files for this project are organized into two main folders:
 │   └── main.ipynb        # Notebook for Model 1 (1D CNN) training and prediction
 │
 └── Model_2/
-├── model.py                  # Defines the DEMANN model architecture
-├── evaluation.py             # Scripts for evaluating prediction performance
-└── demann_predict_fixed.py   # Script for feature extraction, training, and prediction for Model 2
+   ├── model.py                  # Defines the DEMANN model architecture
+   ├── evaluation.py             # Scripts for evaluating prediction performance
+   └── demann_predict_fixed.py   # Script for feature extraction, training, and prediction for Model 2
 
 
 ## Workflow
