@@ -1,0 +1,90 @@
+EMG Onset Detection on HPC Cluster
+This document provides step-by-step instructions for setting up and running the EMG onset detection model on the GWDG HPC cluster.
+Directory Setup
+First, connect to the cluster:
+bashssh -i C:\Users\madde\.ssh\gwdg_key u16613@login-mdc.hpc.gwdg.de
+Create the project directory structure:
+bash# Create necessary directories
+mkdir -p ~/emg_onset_detection/code
+mkdir -p ~/emg_onset_detection/data
+mkdir -p ~/emg_onset_detection/results
+mkdir -p ~/emg_onset_detection/logs
+File Transfer
+From your local machine, transfer your EMG data files to the cluster:
+bash# Transfer .set and .fdt files using scp
+
+scp -i C:\Users\madde\.ssh\gwdg_key C:\EMG_onset_detection\LOL_project\shr_scripts\hpccode\* u16613@login-mdc.hpc.gwdg.de:~/emg_onset_detection/code/
+scp -i C:\Users\madde\.ssh\gwdg_key C:\EMG_onset_detection\LOL_project\epoched_EMG_data\*.set u16613@login-mdc.hpc.gwdg.de:~/emg_onset_detection/data/
+scp -i C:\Users\madde\.ssh\gwdg_key C:\EMG_onset_detection\LOL_project\epoched_EMG_data\*.fdt u16613@login-mdc.hpc.gwdg.de:~/emg_onset_detection/data/
+Code Setup
+Create the Python files on the cluster:
+bash# Navigate to the code directory
+cd ~/emg_onset_detection/code
+
+# Create the Python files using nano or your preferred editor
+nano data_loader.py   # Copy content from data_loader.py artifact
+nano model.py         # Copy content from model.py artifact
+nano train.py         # Copy content from train.py artifact
+nano evaluate.py      # Copy content from evaluate.py artifact
+nano main.py          # Copy content from main.py artifact
+Create the batch job submission script:
+bashnano run_emg_model.sh  # Copy content from run_emg_model.sh artifact
+Make the batch script executable:
+bashchmod +x run_emg_model.sh
+Environment Setup
+Set up the conda environment:
+bash# Load Anaconda module
+module load anaconda3
+
+# Create a new environment for the project
+conda create -n emg_env python=3.8 -y
+
+# Activate the environment
+source activate emg_env
+
+# Install required packages
+conda install -y tensorflow-gpu scipy matplotlib scikit-learn seaborn
+
+# Optional: check if TensorFlow can see the GPU
+python -c "import tensorflow as tf; print('Num GPUs Available:', len(tf.config.list_physical_devices('GPU')))"
+Running the Job
+Submit the job to the SLURM scheduler:
+bash# Navigate to the code directory
+cd ~/emg_onset_detection/code
+
+# Submit the job
+sbatch run_emg_model.sh
+Monitoring the Job
+Check the status of your submitted job:
+bash# Check all your jobs
+squeue -u u16613
+
+# Monitor the output log (replace JOBID with your actual job ID)
+tail -f ~/emg_onset_detection/logs/emg_onset_JOBID.out
+Accessing Results
+After the job completes, the results will be saved in a timestamped directory under ~/emg_onset_detection/results/.
+bash# List result directories
+ls -l ~/emg_onset_detection/results/
+
+# View the most recent results
+cd ~/emg_onset_detection/results/$(ls -t ~/emg_onset_detection/results/ | head -1)
+ls -l
+
+
+
+
+
+python predict_with_pretrained.py --data_dir C:\EMG_onset_detection\LOL_project\epoched_EMG_data --output_dir demann_predictions
+
+
+
+
+python main.py --mode train
+
+python predict_with_pretrained.py --data_dir "C:\EMG_onset_detection\LOL_project\epoched_EMG_data" --output_dir "C:\EMG_onset_detection\LOL_project\results\train_img" --model_path "C:\EMG_onset_detection\LOL_project\shr_scripts\output\demann_model.h5"
+
+python predict_with_pretrained.py --data_dir "C:\EMG_onset_detection\LOL_project\epoched_EMG_data" --output_dir "C:\EMG_onset_detection\LOL_project\results\train_img" --model_path "C:\EMG_onset_detection\LOL_project\shr_scripts\output\demann_model.h5"
+
+
+
+C:\EMG_onset_detection\LOL_project\shr_scripts\emg_dataset\test
