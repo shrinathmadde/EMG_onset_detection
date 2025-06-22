@@ -1,4 +1,3 @@
-# EMG_onset_detection
 # EMG Onset Detection using Deep Learning
 
 This project explores two different deep learning models to detect the onset of muscle activation from continuous Electromyography (EMG) data. The models are trained on the same dataset, which is prepared using a common data preparation script.
@@ -123,3 +122,4 @@ This project uses the following Python libraries:
 * SciPy
 * tqdm
 * PyWavelets (`pywt`)
+
